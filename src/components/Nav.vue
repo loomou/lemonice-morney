@@ -1,6 +1,11 @@
 <template>
   <div class="nav">
-    <router-link to="/money">记账</router-link>
+    <router-link to="/money">
+      <svg>
+        <use xlink:href="#label" />
+      </svg>
+      记账
+    </router-link>
     |
     <router-link to="/labels">标签</router-link>
     |
@@ -8,7 +13,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  // import x from '@/assets/icons/label.svg';
+  // import y from '@/assets/icons/money.svg';
+  // import z from '@/assets/icons/statistics.svg';
+
+  const importAll = (requireContext: __WebpackModuleApi.RequireContext) => requireContext.keys().forEach(requireContext);
+  try {
+    importAll(require.context('../assets/icons',true, /\.svg$/));
+  } catch (error) {
+    console.log(error);
+  }
+
   export default {
     name: 'Nav'
   };
