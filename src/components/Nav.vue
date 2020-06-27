@@ -1,15 +1,24 @@
 <template>
   <div class="nav">
     <router-link to="/money">
-      <svg>
-        <use xlink:href="#label" />
-      </svg>
+      <Icon name="money"/>
+      <!--            <svg>-->
+      <!--              <use xlink:href="#money"></use>-->
+      <!--            </svg>-->
       记账
     </router-link>
     |
-    <router-link to="/labels">标签</router-link>
+    <router-link to="/labels">
+      <!--      <Icon name="label"/>-->
+      <Icon name="labels"/>
+      标签
+    </router-link>
     |
-    <router-link to="/statistics">统计</router-link>
+    <router-link to="/statistics">
+      <!--      <Icon name="statistics"/>-->
+      <Icon name="statistics"/>
+      统计
+    </router-link>
   </div>
 </template>
 
@@ -17,13 +26,13 @@
   // import x from '@/assets/icons/label.svg';
   // import y from '@/assets/icons/money.svg';
   // import z from '@/assets/icons/statistics.svg';
-
-  const importAll = (requireContext: __WebpackModuleApi.RequireContext) => requireContext.keys().forEach(requireContext);
-  try {
-    importAll(require.context('../assets/icons',true, /\.svg$/));
-  } catch (error) {
-    console.log(error);
-  }
+  // console.log(x);
+  // let importAll = (requireContext: __WebpackModuleApi.RequireContext) => requireContext.keys().forEach(requireContext);
+  // try {
+  //   importAll(require.context('../assets/icons', true, /\.svg$/));
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
   export default {
     name: 'Nav'
