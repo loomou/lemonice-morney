@@ -15,7 +15,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Prop} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
 
   // 1.自动提示更智能
   // 2.不能随便写.toString()
@@ -35,13 +35,6 @@
         throw new Error('type is unknown ');
       }
       this.type = type;
-    }
-    mounted() {
-      if (this.xxx === undefined) {
-        console.log('没有xxx');
-      } else {
-        console.log(this.xxx);
-      }
     }
   }
 
