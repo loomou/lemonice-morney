@@ -1,11 +1,11 @@
 <template>
   <div>
     <label class="formItem">
-      {{value}}
       <span class="name">{{this.fieldName}}</span>
       <!--      <input type="text" :value="value" @input="onInput" placeholder="在这里输入备注">-->
       <input type="text"
-             v-model="value"
+             :value="value"
+             @input="onValueChange($event.target.value)"
              :placeholder="this.placeholder">
     </label>
   </div>
@@ -17,7 +17,7 @@
 
   @Component
   export default class FormItem extends Vue {
-    value = '';
+    @Prop({default: ''}) readonly value!: string;
 
     @Prop({required: true}) fieldName!: string;
     @Prop() placeholder!: string;
