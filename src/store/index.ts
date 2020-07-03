@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import clone from '@/lib/clone';
-import createID from '@/lib/createId';
 import createId from '@/lib/createId';
 import router from '@/router';
 
