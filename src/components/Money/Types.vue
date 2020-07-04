@@ -1,11 +1,11 @@
 <template>
   <div>
     <ul class="types">
-      <li :class="value === '-' && 'selected'"
+      <li :class="{selected: value==='-',[classPrefix+'-item']: classPrefix}"
           @click="selectType ('-')">
         支出
       </li>
-      <li :class="value === '+' && 'selected'"
+      <li :class="{selected: value==='+',[classPrefix+'-item']: classPrefix}"
           @click="selectType ('+')">
         收入
       </li>
@@ -15,7 +15,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Prop, Watch} from 'vue-property-decorator';
+  import {Component, Prop} from 'vue-property-decorator';
 
   // 1.自动提示更智能
   // 2.不能随便写.toString()
@@ -28,7 +28,8 @@
     // Number告诉Vue xxx运行时是个Number
     // xxx是属性名
     // number | undefined告诉TS xxx的编译时类型
-    @Prop() readonly value!: string;
+    @Prop(String) readonly value!: string;
+    @Prop(String) classPrefix?: string;
 
     selectType(type: string) {
       if (type !== '-' && type !== '+') {
