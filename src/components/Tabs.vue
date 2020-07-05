@@ -22,7 +22,7 @@
     @Prop({required: true, type: Array}) dataSource!: DateSourceItem[];
     @Prop(String) readonly value!: string;
     @Prop(String) classPrefix?: string;
-    @Prop({type: Number, default: '64px'}) height!: string;
+    // @Prop({type: Number, default: '64px'}) height!: string;
 
     liClass(item: DateSourceItem) {
       return {
