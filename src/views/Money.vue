@@ -60,7 +60,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   .layout-content {
     display: flex;
     flex-direction: column-reverse;
