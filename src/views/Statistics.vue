@@ -24,6 +24,7 @@
   import intervalList from '@/constant/intervalList';
   import recordTypeList from '@/constant/recordTypeList';
   import dayjs from 'dayjs';
+  import clone from '@/lib/clone';
 
   @Component({
     components: {Tabs},
@@ -55,15 +56,22 @@
 
     get result() {
       const {recordList} = this;
-      type HashTableValue = { title: string; items: RecordItem[] };
-      const hashTable: { [key: string]: HashTableValue } = {};
-      for (let i = 0; i < recordList.length; i++) {
-        const [date, time] = recordList[i].createdAt!.split('T');
-        hashTable[date] = hashTable[date] || {title: date, items: []};
-        hashTable[date].items.push(recordList[i]);
+      if (recordList.length === 0) {
+        return [];
       }
-      console.log(hashTable);
-      return hashTable;
+      type HashTableValue = { title: string; items: RecordItem[] };
+      const newList = clone(recordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+      const groupList = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
+      for (let i = 0; i < newList.length; i++) {
+        const current = newList[i];
+        const last = groupList[groupList.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+          last.items.push(current);
+        } else {
+          groupList.push({title: dayjs(current.createdAt).format('YYYY-MM-DD'), items: [current]});
+        }
+      }
+      return groupList;
     }
 
     beforeCreate() {
