@@ -4,6 +4,12 @@
     <Tabs :data-source="recordTypeList"
           :value.sync="record.type"
     />
+    <div class="createdAt">
+      <FormItem field-name="日期"
+                type="date"
+                placeholder="在这里输入日期"
+                :value.sync="record.createdAt"/>
+    </div>
     <div class="notes">
       <FormItem field-name="备注"
                 placeholder="在这里输入备注"
@@ -21,7 +27,7 @@
   import Tags from '@/components/Money/Tags.vue';
   import {Component} from 'vue-property-decorator';
   import Tabs from '@/components/Tabs.vue';
-  import recordTypeList from '@/constant/recordTypeList'
+  import recordTypeList from '@/constant/recordTypeList';
   // const version = window.localStorage.getItem('version') || '0';
   // if (version === '0.0.1') {
   //   // 数据库升级，数据迁移
@@ -37,7 +43,7 @@
     components: {Tabs, Tags, FormItem, NumberPad},
   })
   export default class Money extends Vue {
-    record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
+    record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
 
     get recordList() {
       return this.$store.state.recordList;
@@ -60,7 +66,7 @@
   }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
   .layout-content {
     display: flex;
     flex-direction: column-reverse;
