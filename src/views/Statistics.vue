@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"></Tabs>
+    <Chart :options="xyz" />
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -28,9 +29,10 @@
   import recordTypeList from '@/constant/recordTypeList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
+  import Chart from '@/components/Chart.vue';
 
   @Component({
-    components: {Tabs},
+    components: {Tabs, Chart},
   })
   export default class Statistics extends Vue {
     tagString(tags: Tag[]) {
@@ -40,9 +42,9 @@
     beautify(string: string) {
       const day = dayjs(string);
       const now = dayjs();
-      if (dayjs(string).isSame(now, 'day')) {
+      if (day.isSame(now, 'day')) {
         return '今天';
-      } else if (dayjs(string).isSame(now.subtract(1, 'day'), 'day')) {
+      } else if (day.isSame(now.subtract(1, 'day'), 'day')) {
         return '昨天';
       } else if (day.isSame(now.subtract(2, 'day'), 'day')) {
         return '前天';
@@ -53,6 +55,34 @@
       }
     }
 
+    get xyz() {
+      return {
+        xAxis: {
+          type: 'category',
+          data: [
+            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
+          ]
+        },
+        tooltip: {
+          show: true,
+          triggerOn: 'click',
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [
+            120, 200, 150, 80, 70, 110, 130
+          ],
+          type: 'line',
+          showBackground: true,
+          backgroundStyle: {
+            color: 'rgba(220, 220, 220, 0.8)'
+          }
+        }]
+      }
+    }
+
     get recordList() {
       return (this.$store.state as RootState).recordList;
     }
@@ -60,8 +90,8 @@
     get groupedList() {
       const {recordList} = this;
       const newList = clone(recordList)
-                      .filter(r => r.type === this.type)
-                      .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+        .filter(r => r.type === this.type)
+        .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
       if (newList.length === 0) {
         return [] as Result;
       }
@@ -77,8 +107,9 @@
         }
       }
       result.map(group => {
-        group.total = group.items.reduce((sum, item) =>
-        {return sum + item.amount;}, 0);
+        group.total = group.items.reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
       });
       return result;
     }
@@ -93,6 +124,11 @@
 </script>
 
 <style lang="scss" scoped>
+  .echarts {
+    width: 100%;
+    height: 400px;
+  }
+
   ::v-deep {
     .type-tabs-item {
       background: white;
