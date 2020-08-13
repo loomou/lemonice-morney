@@ -1,7 +1,9 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"></Tabs>
-    <Chart :options="xyz" />
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart class="chart" :options="xyz"/>
+    </div>
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -57,22 +59,48 @@
 
     get xyz() {
       return {
+        grid: {
+          left: 0,
+          right: 0,
+        },
         xAxis: {
           type: 'category',
           data: [
-            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
-          ]
+            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+            '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+            '21', '22', '23', '24', '25', '26', '27', '28', '29', '30',
+          ],
+          axisTick: {
+            alignWithLabel: true,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#666'
+            }
+          }
         },
         tooltip: {
           show: true,
           triggerOn: 'click',
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          show: false,
         },
         series: [{
+          symbol: 'circle',
+          symbolSize: 10,
+          itemStyle: {
+            borderWidth: 1,
+            color: '#666',
+            borderColor: '#666'
+          },
           data: [
-            120, 200, 150, 80, 70, 110, 130
+            120, 200, 150, 80, 70, 110, 130,
+            120, 200, 150, 80, 70, 110, 130,
+            120, 200, 150, 80, 70, 110, 130,
+            120, 200, 150, 80, 70, 110, 130,
+            120, 200
           ],
           type: 'line',
           showBackground: true,
@@ -80,7 +108,7 @@
             color: 'rgba(220, 220, 220, 0.8)'
           }
         }]
-      }
+      };
     }
 
     get recordList() {
@@ -116,6 +144,10 @@
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
+    }
+
+    mounted() {
+      (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
     }
 
     type = '-';
@@ -168,5 +200,17 @@
     margin-right: auto;
     margin-left: 8px;
     color: #999;
+  }
+
+  .chart {
+    width: 430%;
+
+    &-wrapper {
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 </style>
