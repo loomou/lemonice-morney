@@ -82,6 +82,8 @@
         tooltip: {
           show: true,
           triggerOn: 'click',
+          formatter: '{c}',
+          position: 'top',
         },
         yAxis: {
           type: 'value',
