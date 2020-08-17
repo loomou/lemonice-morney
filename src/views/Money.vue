@@ -13,7 +13,7 @@
     <div class="notes">
       <FormItem field-name="备注"
                 placeholder="在这里输入备注"
-                @update:value="onUpdateNotes"/>
+                :value.sync="record.notes"/>
     </div>
     <Tags/>
   </Layout>

@@ -32,6 +32,8 @@
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
   import Chart from '@/components/Chart.vue';
+  import _ from 'lodash';
+  import day from 'dayjs';
 
   @Component({
     components: {Tabs, Chart},
@@ -57,7 +59,35 @@
       }
     }
 
+    get y() {
+      const today = new Date();
+      const array = [];
+      for (let i = 0; i <= 29; i++) {
+        const dateString = day(today).subtract(i, 'day').format('YYYY-MM-DD');
+        const found = _.find(this.recordList, {
+          createdAt: dateString
+        });
+        array.push({
+          date: dateString, value: found ? found.amount : 0
+        });
+        console.log(found);
+      }
+      array.sort((a, b) => {
+        if (a.date > b.date) {
+          return 1;
+        } else if (a.date === b.date) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+      return array;
+    }
+
     get xyz() {
+
+      const keys = this.y.map(item => item.date);
+      const values = this.y.map(item => item.value);
       return {
         grid: {
           left: 0,
@@ -65,11 +95,7 @@
         },
         xAxis: {
           type: 'category',
-          data: [
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-            '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
-            '21', '22', '23', '24', '25', '26', '27', '28', '29', '30',
-          ],
+          data: keys,
           axisTick: {
             alignWithLabel: true,
           },
@@ -97,13 +123,7 @@
             color: '#666',
             borderColor: '#666'
           },
-          data: [
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200
-          ],
+          data: values,
           type: 'line',
           showBackground: true,
           backgroundStyle: {
@@ -149,7 +169,8 @@
     }
 
     mounted() {
-      (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+      const div = (this.$refs.chartWrapper as HTMLDivElement);
+      div.scrollLeft = div.scrollWidth;
     }
 
     type = '-';
